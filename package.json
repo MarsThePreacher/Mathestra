@@ -1,0 +1,26 @@
+{
+  "name": "mathestra",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A graphing calculator for sound: every equation is a waveform you can hear.",
+  "homepage": "https://mathestra.space",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.3"
+  }
+}

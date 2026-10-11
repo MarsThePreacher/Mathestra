@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+    <title>Mathestra: Graphs you can hear</title>
+    <meta name="description" content="Mathestra is a graphing calculator for sound. Write y as a function of time and hear it, from a single tone to chords, rhythm and melody." />
+    <link rel="canonical" href="https://mathestra.space/" />
+    <meta name="application-name" content="Mathestra" />
+    <meta name="apple-mobile-web-app-title" content="Mathestra" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#efefef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Icons: an SVG that switches between light and dark, with PNG/ICO fallbacks -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/brand/mask-icon.svg" color="#000000" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Link previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mathestra" />
+    <meta property="og:url" content="https://mathestra.space/" />
+    <meta property="og:title" content="Mathestra: Graphs you can hear" />
+    <meta property="og:description" content="Mathestra is a graphing calculator for sound. Write y as a function of time and hear it, from a single tone to chords, rhythm and melody." />
+    <meta property="og:image" content="https://mathestra.space/og-image.png?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Mathestra. Graphs you can hear." />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mathestra: Graphs you can hear" />
+    <meta name="twitter:description" content="Mathestra is a graphing calculator for sound. Write y as a function of time and hear it, from a single tone to chords, rhythm and melody." />
+    <meta name="twitter:image" content="https://mathestra.space/og-image.png?v=2" />
+    <meta name="twitter:image:alt" content="Mathestra. Graphs you can hear." />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Mathestra",
+        "url": "https://mathestra.space/",
+        "description": "A graphing calculator for sound. Write y as a function of time and hear it through your speakers.",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any (web browser)",
+        "browserRequirements": "Requires a modern browser with Web Audio",
+        "image": "https://mathestra.space/og-image.png?v=2",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Tinos:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* First paint: just the right background, no half-built page. The page fades in
+         once fonts, equations and sign-in state are ready (src/landing/main.ts). */
+      html { background: #efefef; }
+      html[data-theme='dark'] { background: #111111; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme='light']) { background: #111111; } }
+      html.booting body { opacity: 0; }
+      body { transition: opacity 0.35s ease; }
+      @media (prefers-reduced-motion: reduce) { body { transition: none; } }
+    </style>
+    <script>
+      // Old share links pointed at the site root; send them to the calculator.
+      if (location.hash.length > 40) location.replace('/app/' + location.hash);
+      try {
+        const t = localStorage.getItem('mathestra:theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch {}
+      // Hold the page until it's complete, but never longer than this.
+      document.documentElement.classList.add('booting');
+      setTimeout(() => document.documentElement.classList.remove('booting'), 2500);
+    </script>
+  </head>
+  <body class="home">
+    <!-- brand-sprite -->
+    <header class="nav">
+      <a class="brand" href="/" aria-label="Mathestra home">
+        <svg class="logo" aria-hidden="true"><use href="#mathestra-logo" width="100%" height="100%" /></svg>
+        <span>Mathestra</span>
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#lines">How it works</a>
+        <a href="#examples">Examples</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="theme-btn" aria-label="Switch theme" title="Switch theme">
+          <svg class="i-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.4" /><path d="M10 2.5v1.8M10 15.7v1.8M2.5 10h1.8M15.7 10h1.8M4.7 4.7l1.3 1.3M14 14l1.3 1.3M4.7 15.3 6 14M14 6l1.3-1.3" /></svg>
+          <svg class="i-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.8 12.4A6.6 6.6 0 0 1 7.6 4.2a6.6 6.6 0 1 0 8.2 8.2Z" /></svg>
+        </button>
+        <div id="account"></div>
+        <a class="btn solid" href="/app/">Open calculator</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1 class="hero-title">Graphs you<br />can hear.</h1>
+        <div class="hero-side">
+          <p class="hero-lede">
+            Write <span class="inline-math" data-tex="y"></span> as a function of <i class="var">x</i>, where
+            <i class="var">x</i> is time in seconds. Mathestra plays it through your speakers at 48,000 samples a second
+            and draws it while you listen.
+          </p>
+          <div class="hero-cta">
+            <a class="btn solid big" href="/app/">Open the calculator</a>
+            <button class="btn ghost big" type="button" id="hero-signup">Create an account</button>
+          </div>
+        </div>
+
+        <figure class="instrument" aria-label="Live demo">
+          <div class="instrument-screen">
+            <canvas id="hero-wave" aria-hidden="true"></canvas>
+            <span class="instrument-scale" id="hero-scale">1 ms / div</span>
+          </div>
+          <div class="instrument-deck">
+            <button class="play" id="hero-play" aria-label="Play" type="button">
+              <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6a.8.8 0 0 0 1.2.7l10.6-6.8a.8.8 0 0 0 0-1.4L9.2 4.5a.8.8 0 0 0-1.2.7Z" /></svg>
+              <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2" /><rect x="13.5" y="5" width="4" height="14" rx="1.2" /></svg>
+            </button>
+            <div class="instrument-eq">
+              <span class="expr-static" data-tex="y = 0.5sin(2πfx)"></span>
+            </div>
+            <label class="instrument-slider">
+              <span class="expr-static small" data-tex="f"></span>
+              <input type="range" id="hero-f" min="110" max="880" step="1" value="220" style="--fill: 14.29%" aria-label="Frequency f in hertz" />
+              <output id="hero-f-out">220 Hz · A3</output>
+            </label>
+          </div>
+          <figcaption class="instrument-hint" id="hero-hint">Press play, then drag <i class="var">f</i>. Doubling <i class="var">f</i> raises the note by an octave.</figcaption>
+        </figure>
+      </section>
+
+      <section class="lines" id="lines" aria-labelledby="lines-title">
+        <div class="section-head">
+          <h2 id="lines-title">From one tone to a beat.</h2>
+          <p>
+            Each <span class="inline-math" data-tex="y"></span> line is a pressure wave, and the lines are summed, as
+            sound is in air. There is no synthesizer underneath. The speaker follows your function.
+          </p>
+        </div>
+        <ol class="score" id="score"></ol>
+      </section>
+
+      <section class="examples" id="examples" aria-labelledby="examples-title">
+        <div class="section-head">
+          <h2 id="examples-title">Six pieces to take apart.</h2>
+          <p>Each is a handful of equations. Listen first, then open one and change whatever you like.</p>
+        </div>
+        <ul class="gallery" id="gallery"></ul>
+      </section>
+
+      <section class="features" aria-labelledby="features-title">
+        <h2 id="features-title" class="visually-hidden">What you get</h2>
+        <div class="feature">
+          <span class="expr-static feature-mark" data-tex="sin(2πfx)"></span>
+          <h3>Textbook typesetting</h3>
+          <p>Italic variables, raised exponents and true minus signs, set as you type plain text.</p>
+        </div>
+        <div class="feature">
+          <span class="expr-static feature-mark" data-tex="√(x)"></span>
+          <h3>A keypad for maths</h3>
+          <p>Roots, powers, trigonometry, lists and piecewise functions, laid out for a phone as well as a desk.</p>
+        </div>
+        <div class="feature">
+          <span class="expr-static feature-mark" data-tex="a = 3"></span>
+          <h3>Live sliders</h3>
+          <p>Turn any constant into a slider and move it during playback.</p>
+        </div>
+        <div class="feature">
+          <span class="expr-static feature-mark" data-tex="y_1 + y_2"></span>
+          <h3>Saved and shareable</h3>
+          <p>Keep graphs in your account, or send a link that opens the piece as you left it.</p>
+        </div>
+      </section>
+
+      <section class="closing">
+        <p class="closing-line">Start with a single line.</p>
+        <a class="btn solid big" href="/app/">Open the calculator</a>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <a class="brand" href="/">
+        <svg class="logo" aria-hidden="true"><use href="#mathestra-logo" width="100%" height="100%" /></svg>
+        <span>Mathestra</span>
+      </a>
+      <p>A graphing calculator for sound.</p>
+      <nav aria-label="Footer">
+        <a href="/app/">Calculator</a>
+        <a href="#examples">Examples</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+      </nav>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/landing/main.ts"></script>
+  </body>
+</html>

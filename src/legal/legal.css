@@ -1,0 +1,498 @@
+/* Privacy, Terms and the not-found page. Same system as the landing page. */
+@import '../shared.css';
+
+.page {
+  --page: min(1080px, 100% - 48px);
+  background: var(--chassis);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.brand {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px max(24px, env(safe-area-inset-right), (100% - 1080px) / 2) 12px
+    max(24px, env(safe-area-inset-left), (100% - 1080px) / 2);
+  background: color-mix(in srgb, var(--chassis) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.page-nav.scrolled {
+  border-bottom-color: var(--hairline);
+}
+
+.page-nav-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+a.btn {
+  color: inherit;
+  text-decoration: none;
+}
+
+a.btn.solid {
+  color: var(--on-ink);
+}
+
+/* ---------- legal documents ---------- */
+
+.doc {
+  width: var(--page);
+  margin: 0 auto;
+  padding: clamp(40px, 8vh, 88px) 0 clamp(56px, 10vh, 112px);
+  display: grid;
+  grid-template-columns: 220px minmax(0, 680px);
+  gap: 64px;
+  align-items: start;
+}
+
+.doc-head {
+  grid-column: 1 / -1;
+  max-width: 760px;
+}
+
+.doc-head h1 {
+  margin: 0 0 14px;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.doc-head p {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--ink-2);
+  font-size: 17px;
+  text-wrap: pretty;
+}
+
+.doc-meta {
+  margin-top: 18px !important;
+  font-size: 14px !important;
+  color: var(--ink-3) !important;
+}
+
+/* Contents: follows you down the page on wide screens. */
+.toc {
+  position: sticky;
+  top: 88px;
+  font-size: 14px;
+}
+
+.toc p {
+  margin: 0 0 10px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--hairline);
+}
+
+.toc a {
+  display: block;
+  padding: 5px 0 5px 14px;
+  margin-left: -1px;
+  border-left: 1.5px solid transparent;
+  color: var(--ink-3);
+  text-decoration: none;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.toc a:hover {
+  color: var(--ink);
+}
+
+.toc a.current {
+  color: var(--ink);
+  border-left-color: var(--ink);
+}
+
+.prose {
+  min-width: 0;
+  color: var(--ink-2);
+  font-size: 16.5px;
+  line-height: 1.7;
+}
+
+.prose section {
+  scroll-margin-top: 84px;
+  padding-bottom: 8px;
+}
+
+.prose section + section {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--hairline);
+}
+
+.prose h2 {
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.prose h3 {
+  margin: 24px 0 8px;
+  color: var(--ink);
+  font-size: 16.5px;
+  font-weight: 600;
+}
+
+.prose p,
+.prose ul {
+  margin: 0 0 14px;
+  text-wrap: pretty;
+}
+
+.prose ul {
+  padding-left: 20px;
+}
+
+.prose li {
+  margin-bottom: 6px;
+}
+
+.prose li::marker {
+  color: var(--ink-3);
+}
+
+.prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.prose a {
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--hairline);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.prose a:hover {
+  text-decoration-color: var(--ink);
+}
+
+.prose code {
+  color: var(--ink);
+  font-size: 0.86em;
+}
+
+/* A summary box at the top of each document: the short version. */
+.summary {
+  margin: 0 0 40px;
+  padding: 22px 24px;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--chassis-shadow);
+}
+
+.summary h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.summary ul {
+  margin: 0;
+}
+
+/* A table of what is stored where. */
+.data-table {
+  width: 100%;
+  margin: 8px 0 18px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--hairline);
+  text-align: left;
+  vertical-align: top;
+}
+
+.data-table th {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.data-table td:first-child {
+  color: var(--ink);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---------- footer ---------- */
+
+.page-foot {
+  width: var(--page);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  padding: 26px 0 calc(40px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--hairline);
+}
+
+.page-foot p {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.page-foot nav {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+.page-foot nav a {
+  color: var(--ink-2);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.page-foot nav a:hover,
+.page-foot nav a[aria-current='page'] {
+  color: var(--ink);
+}
+
+/* ---------- not found ---------- */
+
+.lost {
+  width: var(--page);
+  margin: 0 auto;
+  min-height: calc(100dvh - 160px);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0;
+  padding: 48px 0;
+  text-align: center;
+}
+
+.lost-screen {
+  width: min(520px, 100%);
+  margin-bottom: 36px;
+  padding: 10px;
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--chassis-shadow);
+}
+
+.lost-screen svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: var(--screen);
+  box-shadow: 0 0 0 1px var(--screen-edge);
+}
+
+.lost-screen .grid line {
+  stroke: var(--screen-grid-major);
+  stroke-width: 1;
+}
+
+.lost-screen .flat {
+  stroke: #2f6bff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.lost-eq {
+  display: block;
+  padding: 12px 6px 4px;
+  font-family: 'Times New Roman', Tinos, serif;
+  font-size: 20px;
+  color: var(--ink);
+}
+
+.lost-eq i {
+  font-style: italic;
+}
+
+.lost-code {
+  margin: 0 0 6px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.lost h1 {
+  margin: 0 0 12px;
+  font-size: clamp(36px, 6vw, 60px);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.lost p.lede-404 {
+  margin: 0 0 28px;
+  max-width: 44ch;
+  color: var(--ink-2);
+  font-size: 17px;
+  text-wrap: pretty;
+}
+
+.lost-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn.big {
+  height: 46px;
+  padding: 0 22px;
+  font-size: 15.5px;
+  border-radius: 12px;
+}
+
+.btn.ghost.big {
+  border-color: var(--hairline);
+}
+
+.btn.ghost.big:hover {
+  border-color: var(--ink);
+  background: transparent;
+}
+
+/* ---------- smaller screens ---------- */
+
+@media (max-width: 900px) {
+  .doc {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .toc {
+    position: static;
+    padding: 18px 20px;
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--chassis-shadow);
+  }
+  .toc ol {
+    columns: 2;
+    column-gap: 20px;
+    border-left: none;
+  }
+  .toc a {
+    padding: 5px 0;
+    border-left: none;
+  }
+  .toc a.current {
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    --page: calc(100% - 32px);
+  }
+  .page-nav {
+    padding: 10px max(12px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left));
+  }
+  .page-nav-actions .btn.solid .wide {
+    display: none;
+  }
+  .toc ol {
+    columns: 2;
+    column-gap: 16px;
+  }
+  .toc a {
+    font-size: 13.5px;
+    line-height: 1.3;
+  }
+  .prose {
+    font-size: 16px;
+  }
+  .summary {
+    padding: 18px;
+  }
+  /* The data table becomes stacked cards on phones. */
+  .data-table thead {
+    display: none;
+  }
+  .data-table,
+  .data-table tbody,
+  .data-table tr,
+  .data-table td {
+    display: block;
+  }
+  .data-table tr {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .data-table td {
+    padding: 2px 0;
+    border: none;
+  }
+  .data-table td:first-child {
+    white-space: normal;
+    margin-bottom: 2px;
+  }
+  .page-foot nav {
+    margin-left: 0;
+  }
+  .lost-actions .btn.big {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
+@media (pointer: coarse) {
+  .brand {
+    min-height: 40px;
+  }
+  .page-foot nav a,
+  .toc a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+  .toc a {
+    display: flex;
+  }
+}
+
+@media (max-width: 359px) {
+  .toc ol {
+    columns: 1;
+  }
+}

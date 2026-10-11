@@ -1,0 +1,6 @@
+# Never upload local secrets; production settings live in Vercel's environment variables.
+auth-env.txt
+.env
+.env.*
+node_modules
+dist

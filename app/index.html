@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+    <title>Mathestra Calculator</title>
+    <meta name="description" content="Write y as a function of time and hear it. Sliders, functions, lists and a maths keypad, with graphs you can save and share." />
+    <link rel="canonical" href="https://mathestra.space/app/" />
+    <meta name="application-name" content="Mathestra" />
+    <meta name="apple-mobile-web-app-title" content="Mathestra" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#efefef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Icons: an SVG that switches between light and dark, with PNG/ICO fallbacks -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/brand/mask-icon.svg" color="#000000" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Link previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mathestra" />
+    <meta property="og:url" content="https://mathestra.space/app/" />
+    <meta property="og:title" content="Mathestra Calculator" />
+    <meta property="og:description" content="Write y as a function of time and hear it. Sliders, functions, lists and a maths keypad, with graphs you can save and share." />
+    <meta property="og:image" content="https://mathestra.space/og-image.png?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Mathestra. Graphs you can hear." />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mathestra Calculator" />
+    <meta name="twitter:description" content="Write y as a function of time and hear it. Sliders, functions, lists and a maths keypad, with graphs you can save and share." />
+    <meta name="twitter:image" content="https://mathestra.space/og-image.png?v=2" />
+    <meta name="twitter:image:alt" content="Mathestra. Graphs you can hear." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Tinos:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Apply the saved theme before first paint, so there is no flash.
+      try {
+        const t = localStorage.getItem('mathestra:theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <!-- brand-sprite -->
+    <div class="app">
+      <header class="bar">
+        <a class="brand" href="/" title="Mathestra home">
+          <svg class="logo" aria-hidden="true"><use href="#mathestra-logo" width="100%" height="100%" /></svg>
+          <span>Mathestra</span>
+        </a>
+        <span class="bar-divider" aria-hidden="true"></span>
+        <input id="title" class="title" spellcheck="false" aria-label="Piece title" />
+        <button class="btn ghost save" id="save" type="button">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3.5h7l3 3v9a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Z" /><path d="M7 3.5v4h5v-4M7 16.5v-5h6v5" /></svg>
+          <span class="label">Save</span>
+        </button>
+        <span class="save-status" id="save-status" role="status" aria-live="polite"></span>
+
+        <div class="bar-actions">
+          <button class="btn ghost" id="graphs-btn" type="button" aria-controls="drawer" aria-expanded="false">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3.5" width="14" height="13" rx="2" /><path d="M5.5 10c1.5-3.6 3-3.6 4.5 0s3 3.6 4.5 0" /></svg>
+            <span class="label">My graphs</span>
+          </button>
+          <div class="menu" id="examples">
+            <button class="btn ghost" id="examples-btn" aria-haspopup="menu" aria-expanded="false">
+              Examples
+              <svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" /></svg>
+            </button>
+            <div class="menu-pop" id="examples-pop" role="menu"></div>
+          </div>
+          <button class="icon-btn" id="help-btn" aria-label="Syntax guide" title="Syntax guide">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" /><path d="M7.9 7.8a2.2 2.2 0 1 1 3 2.05c-.6.25-.9.7-.9 1.35v.3" /><circle cx="10" cy="14.2" r=".6" class="fill" /></svg>
+          </button>
+          <button class="icon-btn" id="theme-btn" aria-label="Switch theme" title="Switch theme">
+            <svg class="i-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.4" /><path d="M10 2.5v1.8M10 15.7v1.8M2.5 10h1.8M15.7 10h1.8M4.7 4.7l1.3 1.3M14 14l1.3 1.3M4.7 15.3 6 14M14 6l1.3-1.3" /></svg>
+            <svg class="i-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.8 12.4A6.6 6.6 0 0 1 7.6 4.2a6.6 6.6 0 1 0 8.2 8.2Z" /></svg>
+          </button>
+          <!-- On narrow screens the actions above fold into this menu. -->
+          <div class="menu more" id="more">
+            <button class="icon-btn" id="more-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More" title="More">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="4.5" cy="10" r="1.4" class="fill" /><circle cx="10" cy="10" r="1.4" class="fill" /><circle cx="15.5" cy="10" r="1.4" class="fill" /></svg>
+            </button>
+            <div class="menu-pop" id="more-pop" role="menu"></div>
+          </div>
+          <div id="account"></div>
+          <button class="btn solid" id="share" aria-label="Copy link to this piece">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8.5 11.5a3.5 3.5 0 0 0 5 0l2.5-2.5a3.5 3.5 0 0 0-5-5l-.8.8M11.5 8.5a3.5 3.5 0 0 0-5 0L4 11a3.5 3.5 0 0 0 5 5l.8-.8" /></svg>
+            <span class="label">Copy link</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="console" aria-label="Expressions">
+          <div id="view-banner" class="view-banner" role="note" hidden>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4.5" y="9" width="11" height="7.5" rx="1.75" /><path d="M7 9V6.75a3 3 0 0 1 6 0V9" /></svg>
+            <p><strong>View only.</strong> <span>You can play this graph. Make a copy to change it.</span></p>
+            <button id="make-copy" class="btn solid" type="button">Make a copy</button>
+          </div>
+          <div id="list" class="list"></div>
+          <div class="console-foot">
+            <button id="add" class="add" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4.5v11M4.5 10h11" /></svg>
+              New line
+            </button>
+            <button id="audio-btn" class="btn ghost audio-btn" type="button" title="Add an audio file as a function of time">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h1.5M6 7v6M9 4.5v11M12 7.5v5M15 6v8M17.5 10h-.01" /></svg>
+              <span class="label">Audio</span>
+            </button>
+            <input id="audio-input" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.aif,.aiff" multiple hidden />
+            <button id="keypad-btn" class="icon-btn keypad-toggle" type="button" aria-controls="keypad-wrap" aria-expanded="false" aria-label="Math keypad" title="Math keypad">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5" /><path d="M6.5 9.5h.01M10 9.5h.01M13.5 9.5h.01M17 9.5h.01M6.5 12.5h.01M10 12.5h.01M13.5 12.5h.01M17 12.5h.01M8.5 15.5h7" /></svg>
+            </button>
+          </div>
+        </aside>
+
+        <section class="stage">
+          <div class="screen">
+            <canvas id="graph" aria-label="Waveform graph"></canvas>
+            <p class="hint" id="hint" hidden>Try <code>y = sin(2π·440x)</code>, then press play</p>
+            <div class="screen-tools">
+              <div class="seg" role="group" aria-label="View">
+                <button id="zoom-wave" title="Zoom in to see the wave shape (20 ms)">Wave</button>
+                <button id="zoom-song" title="Zoom out to see the rhythm (4 s)">Song</button>
+              </div>
+              <div class="seg" role="group" aria-label="Zoom">
+                <button id="zoom-out" aria-label="Zoom out" title="Zoom out">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9" /></svg>
+                </button>
+                <button id="zoom-in" aria-label="Zoom in" title="Zoom in">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3.5v9M3.5 8h9" /></svg>
+                </button>
+              </div>
+              <label class="switch dark" title="Keep the playhead on screen">
+                <input id="follow" type="checkbox" checked />
+                <span class="track" aria-hidden="true"></span>
+                Follow
+              </label>
+            </div>
+            <output class="scale" id="scale"></output>
+          </div>
+
+          <div class="deck">
+            <div class="transport">
+              <button id="play" class="play" aria-label="Play" title="Play (Space)">
+                <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6a.8.8 0 0 0 1.2.7l10.6-6.8a.8.8 0 0 0 0-1.4L9.2 4.5a.8.8 0 0 0-1.2.7Z" /></svg>
+                <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2" /><rect x="13.5" y="5" width="4" height="14" rx="1.2" /></svg>
+              </button>
+              <button id="stop" class="icon-btn" aria-label="Back to start" title="Back to start">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 4.5v11" /><path d="M15 5.2v9.6a.6.6 0 0 1-.95.5L7.4 10.5a.6.6 0 0 1 0-1l6.65-4.8a.6.6 0 0 1 .95.5Z" class="fill" /></svg>
+              </button>
+              <output id="time" class="time">0:00.000</output>
+            </div>
+
+            <div class="meter" id="meter" title="Output level. Red means the sound is being clipped at ±1." aria-hidden="true"></div>
+
+            <div class="deck-controls">
+              <label class="switch" title="Repeat the first part of the piece">
+                <input id="loop-on" type="checkbox" />
+                <span class="track" aria-hidden="true"></span>
+                Loop
+              </label>
+              <span class="field">
+                <input id="loop-len" inputmode="decimal" aria-label="Loop length in seconds" />
+                <span>s</span>
+              </span>
+              <label class="volume" title="Master volume">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 8v4h3l4 3.5v-11l-4 3.5z" class="fill" /><path d="M13.5 7.5a3.5 3.5 0 0 1 0 5M15.5 5.5a6.4 6.4 0 0 1 0 9" /></svg>
+                <input id="master" type="range" min="0" max="1" step="0.01" aria-label="Master volume" />
+              </label>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div class="drop-zone" id="drop-zone" aria-hidden="true">
+        <div class="drop-card">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h1.5M6 7v6M9 4.5v11M12 7.5v5M15 6v8M17.5 10h-.01" /></svg>
+          <b>Drop to add audio</b>
+          <span>Each file becomes a function of time you can use in equations.</span>
+        </div>
+      </div>
+      <div class="drawer-scrim" id="drawer-scrim"></div>
+      <aside class="drawer" id="drawer" aria-label="My graphs" inert>
+        <header class="drawer-head">
+          <h2>My graphs</h2>
+          <button class="icon-btn" id="drawer-close" type="button" aria-label="Close">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9" /></svg>
+          </button>
+        </header>
+        <button class="drawer-new" id="drawer-new" type="button">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4.5v11M4.5 10h11" /></svg>
+          New graph
+        </button>
+        <div class="drawer-body" id="drawer-body"></div>
+      </aside>
+
+      <div class="keypad-wrap" id="keypad-wrap">
+        <div class="keypad-inner">
+          <section class="keypad" id="keypad" aria-label="Math keypad">
+            <button class="icon-btn keypad-close" id="keypad-close" type="button" aria-label="Close keypad" title="Close keypad">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 8l4.5 4.5L14.5 8" /></svg>
+            </button>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <dialog id="help" class="sheet" aria-labelledby="help-title">
+      <header>
+        <h2 id="help-title">Writing in Mathestra</h2>
+        <button class="icon-btn" id="help-close" aria-label="Close">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9" /></svg>
+        </button>
+      </header>
+      <p class="lede">
+        <b>x</b> is time in seconds. <b>y</b> is the position of the speaker cone, from −1 to 1.
+        Each <code>y = …</code> line is a track, and the tracks are summed.
+      </p>
+      <dl class="ref">
+        <dt><code>y = sin(2π·440x)</code></dt><dd>A 440 Hz sine wave, concert A</dd>
+        <dt><code>a = 3</code></dt><dd>A slider, adjustable during playback</dd>
+        <dt><code>f(s) = s·e^{-5s}</code></dt><dd>A function of your own</dd>
+        <dt><code>{x&lt;1: a, b}</code></dt><dd>Piecewise: a for the first second, then b</dd>
+        <dt><code>{0&lt;x&lt;2}</code></dt><dd>1 from 0 to 2 seconds, silent otherwise</dd>
+        <dt><code>N = [0, 4, 7]</code></dt><dd>A list. <code>N[2]</code> is its second item</dd>
+        <dt><code>// a note</code></dt><dd>A note, ignored by the calculator</dd>
+        <dt><code>drums(t)</code></dt><dd>An imported audio clip, read t seconds in. <code>drums(2x)</code> plays it twice as fast</dd>
+      </dl>
+      <h3>Functions and constants</h3>
+      <p class="small">
+        sin cos tan sec csc cot arcsin arccos arctan sinh cosh tanh sqrt cbrt exp ln log abs sign
+        floor ceil round mod min max length total mean, and the constants π, τ and e. Multiplication can be implied:
+        <code>2πfx</code> means 2·π·f·x.
+      </p>
+      <h3>Shortcuts</h3>
+      <dl class="ref keys">
+        <dt><kbd>Space</kbd></dt><dd>Play or pause</dd>
+        <dt><kbd>Enter</kbd></dt><dd>New line below</dd>
+        <dt><kbd>⌫</kbd> on an empty line</dt><dd>Delete the line</dd>
+        <dt>Click a graph icon</dt><dd>Hide or show its graph. Hidden graphs are silent</dd>
+        <dt>Hold a graph icon</dt><dd>Colour, opacity, thickness and line style. Right-click also works</dd>
+        <dt>Keypad button</dt><dd>Keys for roots, powers and functions</dd>
+        <dt>Audio button, or drop a file</dt><dd>Add a recording as a function of time. Up to 3 minutes</dd>
+        <dt>Drag the screen</dt><dd>Pan</dd>
+        <dt>Scroll · Shift+scroll</dt><dd>Zoom time · zoom height</dd>
+        <dt>Click the screen</dt><dd>Move the playhead</dd>
+      </dl>
+      <p class="small help-legal"><a href="/privacy/">Privacy Policy</a> · <a href="/terms/">Terms of Service</a></p>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

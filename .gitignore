@@ -1,0 +1,9 @@
+node_modules
+dist
+
+# Local secrets and settings
+.env*
+!.env.example
+*.local
+auth-env.txt
+.vercel
